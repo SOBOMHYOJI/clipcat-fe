@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_UFL;
 
 export type LanguageCode = "vi" | "ru" | "uz" | "km" | "mn";
 
