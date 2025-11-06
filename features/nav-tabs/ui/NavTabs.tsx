@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const TABS = [
-  { key: "upload", label: "파일 업로드", href: "/upload" },
+  { key: "root", label: "파일 업로드", href: "/" },
   { key: "ai", label: "AI 상담", href: "/ai" },
 ] as const;
 
