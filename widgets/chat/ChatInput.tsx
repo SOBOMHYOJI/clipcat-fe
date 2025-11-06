@@ -34,13 +34,13 @@ export default function ChatInput() {
         }}
         placeholder="텍스트를 입력하세요."
         disabled={sending}
-        className="min-h-[44px] max-h-[140px] w-full resize-none rounded-l-full px-2 py-3 leading-6 outline-none"
+        className="min-h-[46px] max-h-[140px] w-full resize-none rounded-l-full px-2 py-3 leading-6 outline-none"
       />
       <button
         onClick={fire}
         disabled={sending || !text.trim()}
         aria-label="보내기"
-        className="ml-2 flex h-12 w-12 items-center justify-center rounded-full bg-[#111827] text-white disabled:opacity-60"
+        className="ml-0.5 mb-1 flex h-10 w-11 items-center justify-center rounded-full bg-[#111827] text-white disabled:opacity-60"
       >
         {/* ▶︎ 아이콘 느낌 */}
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
