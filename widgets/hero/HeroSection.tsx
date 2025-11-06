@@ -1,11 +1,14 @@
-// app/page.tsx
+"use client";
+import { useRouter } from "next/navigation";
 import BlinkingMascot from "@/entities/mascot/ui/BlinkingMascot";
+import UploadButton from "@/features/upload-file/ui/UploadButton";
 
-export default function Page() {
+export default function HeroSection() {
+  const router = useRouter();
+
   return (
     <section className="mx-auto max-w-[1120px] px-6 py-14">
       <div className="grid gap-10 md:grid-cols-[1fr_420px] md:items-start">
-        {/* LEFT: 텍스트 */}
         <div>
           <h1 className="text-[56px] leading-[1.05] font-extrabold tracking-[-0.02em]">
             언어의 벽을 넘어,
@@ -19,27 +22,17 @@ export default function Page() {
           </p>
 
           <div className="mt-8 flex items-center gap-4">
-            <button className="rounded-full bg-[#4ade80] px-6 py-3 text-[16px] font-semibold text-white shadow-sm hover:brightness-95">
-              가정통신문 업로드하기
+            <UploadButton />
+            <button className="rounded-full bg-[#111827] px-6 py-3 text-[16px] font-semibold text-white hover:brightness-110">
+              모르는 단어 물어보기
             </button>
-
-            <div className="relative">
-              <button className="rounded-full bg-[#111827] px-6 py-3 text-[16px] font-semibold text-white hover:brightness-110">
-                모르는 단어 물어보기
-              </button>
-            </div>
           </div>
         </div>
 
-        {/* RIGHT: 마스코트 */}
         <div className="relative md:h-[520px]">
           <BlinkingMascot
             width={340}
-            className="
-              pointer-events-none
-              md:absolute md:right-[-18px] md:top-[-12px]   /* 👉 위치 미세 조정 */
-              md:justify-self-end
-            "
+            className="pointer-events-none md:absolute md:right-[-18px] md:top-[-12px]"
           />
         </div>
       </div>
