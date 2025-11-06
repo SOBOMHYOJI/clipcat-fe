@@ -19,9 +19,9 @@ export default function UploadSummaryLayout() {
   return (
     <section className="mx-auto max-w-[1120px] px-6 py-10">
       <SectionHeader title="요약 결과" />
-      <div className="mt-4 grid gap-6 md:grid-cols-[1fr_280px]">
+      <div className="mt-4 grid gap-6 md:grid-cols-[1fr_280px] md:items-start">
         <SummaryCard data={data} />
-        <div className="relative">
+        <div className="relative md:h-[500px]">
           <BlinkingMascot
             width={220}
             className="md:absolute md:right-0 md:bottom-[-8px]"
