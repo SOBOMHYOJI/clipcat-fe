@@ -18,6 +18,7 @@ export default function UploadButton() {
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
 
+    console.log("File selected for upload");
     const file = e.target.files[0];
     const ok = await upload(file); // 훅에 파일 전달
     if (ok) router.push("/upload"); // 성공 시 업로드 결과 페이지 이동

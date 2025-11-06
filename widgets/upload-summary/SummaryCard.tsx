@@ -6,7 +6,11 @@ import { useTextSelection } from "@/features/translate-text/lib/useTextSelection
 import TranslationPopup from "@/features/translate-text/ui/TranslationPopup";
 import { formatEasyText } from "@/entities/mascot/document/lib/formatText";
 
-export default function SummaryCard({ data }: { data: string | null }) {
+export default function SummaryCard({
+  data,
+}: {
+  data: null | string;
+}) {
   const contentRef = useRef<HTMLDivElement>(null);
   const { selection, translation, loading, closePopup } =
     useTextSelection(contentRef);
@@ -40,6 +44,6 @@ export default function SummaryCard({ data }: { data: string | null }) {
           </div>,
           document.body
         )}
-    </>
+    </div>
   );
 }
