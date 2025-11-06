@@ -1,58 +1,43 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { useChatStore } from "@/features/chat/model/store";
+import { Send } from "lucide-react";
+
 export default function ChatInput() {
-  const { send, sending } = useChatStore();
   const [text, setText] = useState("");
-  const taRef = useRef<HTMLTextAreaElement>(null);
+  const sendMessage = useChatStore((s) => s.sendMessage);
 
-  useEffect(() => {
-    const el = taRef.current;
-    if (!el) return;
-    el.style.height = "0px";
-    el.style.height = Math.min(el.scrollHeight, 140) + "px";
-  }, [text]);
-
-  const fire = () => {
-    const v = text.trim();
-    if (!v || sending) return;
-    send(v);
+  const handleSend = () => {
+    if (!text.trim()) return;
+    sendMessage(text, "vi");
     setText("");
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
+
   return (
-    <div className="flex items-end rounded-full border border-gray-300 bg-white pl-4 pr-2">
-      <textarea
-        ref={taRef}
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            fire();
-          }
-        }}
-        placeholder="텍스트를 입력하세요."
-        disabled={sending}
-        className="min-h-[46px] max-h-[140px] w-full resize-none rounded-l-full px-2 py-3 leading-6 outline-none"
-      />
-      <button
-        onClick={fire}
-        disabled={sending || !text.trim()}
-        aria-label="보내기"
-        className="ml-0.5 mb-1 flex h-10 w-11 items-center justify-center rounded-full bg-[#111827] text-white disabled:opacity-60"
-      >
-        {/* ▶︎ 아이콘 느낌 */}
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M5 12h14M13 5l7 7-7 7"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </button>
+    <div className="flex items-center justify-center w-full border-t border-gray-200 bg-white px-4 py-3">
+      <div className="flex w-full max-w-3xl items-center rounded-full border border-gray-300 bg-white px-5 py-3 shadow-sm focus-within:ring-2 focus-within:ring-gray-300">
+        <input
+          type="text"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="텍스트를 입력하세요."
+          className="flex-1 bg-transparent text-gray-800 placeholder-gray-400 outline-none"
+        />
+        <button
+          onClick={handleSend}
+          className="ml-2 rounded-full p-2 text-gray-700 hover:bg-gray-100 transition"
+        >
+          <Send size={20} />
+        </button>
+      </div>
     </div>
   );
 }

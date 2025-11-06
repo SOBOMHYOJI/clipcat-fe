@@ -1,51 +1,66 @@
 "use client";
 import { create } from "zustand";
+import { sendChatMessage } from "@/shared/lib/api";
 
-type Msg = {
+export type Message = {
   id: string;
   role: "user" | "assistant";
   content: string;
   translation?: string;
+  isLoading?: boolean;
 };
 
-type ChatState = {
-  messages: Msg[];
-  sending: boolean;
-  typing: boolean;
-  send: (text: string) => Promise<void>;
+type ChatStore = {
+  messages: Message[];
+  sendMessage: (text: string, lang: string) => Promise<void>;
 };
 
-let seq = 0;
-
-export const useChatStore = create<ChatState>((set, get) => ({
+export const useChatStore = create<ChatStore>((set, get) => ({
   messages: [],
-  sending: false,
-  typing: false,
-  async send(text: string) {
-    set({ sending: true });
-    set((s) => ({
-      messages: [
-        ...s.messages,
-        { id: String(++seq), role: "user", content: text },
-      ],
-    }));
 
-    // mock 응답
-    set({ typing: true });
-    await new Promise((r) => setTimeout(r, 700));
-    set((s) => ({
-      messages: [
-        ...s.messages,
-        {
-          id: String(++seq),
-          role: "assistant",
-          content: "운동회는 학교에서 하는 달리기나 게임 같은 체육 행사입니다!",
-          translation:
-            "Ngày hội thể thao là sự kiện thể dục thể thao ở trường, có chạy và trò chơi",
-        },
-      ],
-      typing: false,
-      sending: false,
-    }));
+  sendMessage: async (text, lang) => {
+    const userMsg: Message = {
+      id: Date.now().toString(),
+      role: "user",
+      content: text,
+    };
+    const loadingMsg: Message = {
+      id: Date.now().toString() + "-loading",
+      role: "assistant",
+      content: "",
+      isLoading: true,
+    };
+
+    set((s) => ({ messages: [...s.messages, userMsg, loadingMsg] }));
+
+    try {
+      const res = await sendChatMessage(text, lang);
+
+      set((s) => ({
+        messages: s.messages.map((m) =>
+          m.isLoading
+            ? {
+                ...m,
+                isLoading: false,
+                content: res.reply ?? "응답이 없습니다.",
+                translation: res.translation ?? "",
+              }
+            : m
+        ),
+      }));
+    } catch (err) {
+      console.error(err);
+      set((s) => ({
+        messages: s.messages.map((m) =>
+          m.isLoading
+            ? {
+                ...m,
+                isLoading: false,
+                content: "⚠️ 서버 연결에 실패했습니다.",
+              }
+            : m
+        ),
+      }));
+    }
   },
 }));
